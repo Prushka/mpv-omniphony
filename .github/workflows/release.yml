@@ -1,9 +1,9 @@
 name: Release
 
 # Triggered by a v* tag.
-# Builds mpv (the fork tag pinned in mpv-fork.env) for Linux, Windows (MinGW cross) and
-# macOS arm64 (native), bundles each with the matching liborender artifacts, and
-# creates a draft GitHub release.
+# Builds mpv (the fork tag pinned in mpv-fork.env) for Linux and Windows (MinGW
+# cross; Sparkle's fork builds no macOS), bundles each with the matching
+# liborender artifacts, and creates a draft GitHub release.
 #
 # Sparkle's build bundles harletty-bridge v0.9.0's Dolby and DTS bridges in
 # the Windows zip only (bridges/, with their terms); the Linux and macOS
@@ -606,7 +606,10 @@ jobs:
   # macOS (Apple Silicon): mpv builds natively, so liborender is built in the
   # same job (like the Linux job, unlike the Windows cross-compile split).
   build-macos:
-    if: ${{ !inputs.windows_only }}
+    # Sparkle's fork is given no macOS runner (the job waits 15 minutes and is
+    # cancelled), and Sparkle ships only the Windows build: its releases carry
+    # Linux and Windows.
+    if: ${{ false }}
     # macOS 15: Homebrew no longer builds bottles for macOS 14, so on
     # macos-14 `brew install ffmpeg libass` falls back to source builds and
     # fails. The bundled dylibs come from Sequoia bottles, so the app needs
@@ -751,7 +754,7 @@ jobs:
     # already-published release): it uploads artifacts and stops there, rather
     # than drafting a release named after a branch.
     if: startsWith(github.ref, 'refs/tags/')
-    needs: [build-linux, build-windows, build-macos]
+    needs: [build-linux, build-windows]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -779,10 +782,6 @@ jobs:
       - uses: actions/download-artifact@v7
         with:
           name: libmpv-omniphony-windows-x86_64
-
-      - uses: actions/download-artifact@v7
-        with:
-          name: mpv-omniphony-macos-arm64
 
       # Resolve the engine commit this build embeds, so the relocated release is
       # tagged at the exact liborender source it was compiled against (GPL §6).
@@ -832,17 +831,6 @@ jobs:
             incompatible library is rejected with a clear log line and mpv
             falls back to its native decoders.
 
-            **macOS (Apple Silicon, macOS 15 Sequoia or later):**
-            `…-macos-arm64.zip` contains a
-            self-contained, double-clickable `mpv-omniphony.app` (built with
-            mpv's own bundler — every dylib incl. ffmpeg and MoltenVK is bundled,
-            no Homebrew required). CLI users run
-            `mpv-omniphony.app/Contents/MacOS/mpv`. It is ad-hoc signed, not
-            notarized, so the first launch is blocked by Gatekeeper — clear the
-            download quarantine once with
-            `xattr -dr com.apple.quarantine /path/to/mpv-omniphony.app`, or
-            right-click → Open the first time.
-
             **Embedding (Windows):** `libmpv-omniphony-…-windows-x86_64.zip`
             carries `libmpv-2.dll` from this same build, with `libmpv.dll.a`
             (MinGW), `mpv.def` (run `lib /def:mpv.def /name:libmpv-2.dll
@@ -886,5 +874,4 @@ jobs:
             mpv-omniphony-*-linux-x86_64.AppImage
             mpv-omniphony-*-windows-x86_64.zip
             libmpv-omniphony-*-windows-x86_64.zip
-            mpv-omniphony-*-macos-arm64.zip
             mpv-omniphony-*-patches.tar.gz
