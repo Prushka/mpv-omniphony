@@ -305,8 +305,8 @@ is not included and is licensed separately.
 This fork builds the mpv the Sparkle desktop app plays home-theater sound with.
 It compiles [Prushka/mpv](https://github.com/Prushka/mpv) at the tag named in
 `mpv-fork.env`: mgth/mpv's `orender-v0.7.0.1` plus Windows' spatial audio output
-(`--ao=wasapi-spatial`, from mpv-player/mpv#18389) and a reset of its objects on
-every seek. The Windows zip also carries harletty-bridge v0.9.0's Dolby and DTS
+(`--ao=wasapi-spatial`, from mpv-player/mpv#18389), a reset of its objects on
+every seek, and one chosen device for it and `wasapi`. The Windows zip also carries harletty-bridge v0.9.0's Dolby and DTS
 bridges in `bridges/`, under their own terms (`bridges/LICENSES.txt`,
 GPL-3.0-or-later; source at https://github.com/harletty/harletty-bridge/tree/v0.9.0).
 Releases are published here, as `mpv-v<version>-sparkle.<n>`.
