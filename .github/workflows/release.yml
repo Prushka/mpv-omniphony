@@ -335,7 +335,7 @@ jobs:
           # (tiny, self-contained, turnkey `mingw` Makefile target).
           SYS=/usr/x86_64-w64-mingw32
           LUA_VER=5.2.4
-          curl -sLO "https://www.lua.org/ftp/lua-${LUA_VER}.tar.gz"
+          curl -fsSL --retry 5 --retry-all-errors --retry-delay 10 -O "https://www.lua.org/ftp/lua-${LUA_VER}.tar.gz"
           tar xzf "lua-${LUA_VER}.tar.gz"
           cd "lua-${LUA_VER}"
           # mingw target builds lua52.dll + tools
