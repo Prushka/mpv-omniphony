@@ -5,8 +5,9 @@ name: Release
 # macOS arm64 (native), bundles each with the matching liborender artifacts, and
 # creates a draft GitHub release.
 #
-# The decoder bridge is NOT bundled — it carries licensing constraints that
-# require the user to download it separately (see README).
+# Sparkle's build bundles harletty-bridge v0.9.0's Dolby and DTS bridges in
+# the Windows zip only (bridges/, with their terms); the Linux and macOS
+# bundles still carry no bridge (see README).
 on:
   push:
     tags:
@@ -524,7 +525,22 @@ jobs:
           echo "97d01aaa324bfd24d24608764a4fa1dc3ecb5725ec1c755093e33de7e5030291  harletty.zip" | sha256sum -c -
           mkdir -p staging/bridges
           unzip -j harletty.zip harletty_dolby_bridge.dll harletty_dts_bridge.dll -d staging/bridges
-          curl -fsSL -o staging/bridges/LICENSES.txt https://raw.githubusercontent.com/harletty/harletty-bridge/v0.9.0/LICENSES/binary-bridge.txt
+          {
+            echo "harletty_dolby_bridge.dll and harletty_dts_bridge.dll, harletty-bridge v0.9.0"
+            echo "Source: https://github.com/harletty/harletty-bridge/tree/v0.9.0"
+            echo
+            echo "The bridges are GPL-3.0-or-later: they link bridge_api from Omniphony"
+            echo "(GPL-3.0-or-later), which makes each a combined work. The sources they"
+            echo "are built from are Apache-2.0. Both licences follow."
+            echo
+            echo "======== GNU General Public License, version 3 ========"
+            echo
+            curl -fsSL https://raw.githubusercontent.com/mgth/Omniphony/${OMNIPHONY_REF}/LICENSE
+            echo
+            echo "======== Apache License 2.0 (harletty-bridge sources) ========"
+            echo
+            curl -fsSL https://raw.githubusercontent.com/harletty/harletty-bridge/v0.9.0/LICENSE
+          } > staging/bridges/LICENSES.txt
         shell: bash
 
       - name: Package final zip
@@ -841,7 +857,11 @@ jobs:
             `scripts/` directory. A leftover copy is harmless (it self-disables
             on these PUC-Lua builds), but it is no longer needed.
 
-            **NOT bundled:** the decoder bridge plugin
+            **Windows (Sparkle's build):** `bridges/` holds harletty-bridge
+            v0.9.0's `harletty_dolby_bridge.dll` and `harletty_dts_bridge.dll`,
+            GPL-3.0-or-later, their terms in `bridges/LICENSES.txt`.
+
+            **Linux and macOS, NOT bundled:** the decoder bridge plugin
             (`omniphony_bridge.so` / `.dll`). Licensing constraints on the
             underlying codec mean users must obtain it themselves from
             [harletty-bridge](https://github.com/harletty/harletty-bridge/releases),
