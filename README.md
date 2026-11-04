@@ -310,7 +310,7 @@ every seek, one chosen device for it and `wasapi`, and moving objects
 (`--ad-orender-moving=N`: up to N of a stream's objects go to Windows as
 dynamic objects, placed by the title's time). Its liborender is built from
 [Prushka/Omniphony](https://github.com/Prushka/Omniphony) at
-`v0.7.0-sparkle.1`: Omniphony v0.7.0 with object output (ABI 0.13). The Windows zip also carries harletty-bridge v0.9.0's Dolby and DTS
+`v0.7.0-sparkle.2`: Omniphony v0.7.0 with object output (ABI 0.13). The Windows zip also carries harletty-bridge v0.9.0's Dolby and DTS
 bridges in `bridges/`, under their own terms (`bridges/LICENSES.txt`,
 GPL-3.0-or-later; source at https://github.com/harletty/harletty-bridge/tree/v0.9.0).
 Releases are published here, as `mpv-v<version>-sparkle.<n>`.
