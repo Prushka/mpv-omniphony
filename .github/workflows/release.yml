@@ -535,7 +535,7 @@ jobs:
             echo
             echo "======== GNU General Public License, version 3 ========"
             echo
-            curl -fsSL https://raw.githubusercontent.com/mgth/Omniphony/${OMNIPHONY_REF}/LICENSE
+            curl -fsSL https://raw.githubusercontent.com/Prushka/Omniphony/${OMNIPHONY_REF}/LICENSE
             echo
             echo "======== Apache License 2.0 (harletty-bridge sources) ========"
             echo
@@ -789,7 +789,7 @@ jobs:
         id: engineref
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: echo "sha=$(gh api repos/mgth/Omniphony/commits/${OMNIPHONY_REF} --jq .sha)" >> "$GITHUB_OUTPUT"
+        run: echo "sha=$(gh api repos/Prushka/Omniphony/commits/${OMNIPHONY_REF} --jq .sha)" >> "$GITHUB_OUTPUT"
 
       # Publish the player bundles on the ENGINE repo's Releases page (the canonical
       # download hub) rather than here. Builds still run on mpv-omniphony; only the
@@ -861,13 +861,13 @@ jobs:
             **License — GPL-3.0-or-later.** This build combines mpv
             (GPL-2.0-or-later) with liborender (GPL-3.0-or-later), so the
             combined work is GPLv3. Corresponding source: the mpv fork at
-            tag `${{ steps.fork.outputs.tag }}` (https://github.com/mgth/mpv,
+            tag `${{ steps.fork.outputs.tag }}` (https://github.com/Prushka/mpv,
             commit ${{ steps.fork.outputs.sha }}), which is mpv
             `${{ env.MPV_TAG }}` plus the patch series attached as
             `…-patches.tar.gz`; the build recipe at commit ${{ github.sha }}
-            of https://github.com/mgth/mpv-omniphony; and liborender at
+            of https://github.com/Prushka/mpv-omniphony; and liborender at
             Omniphony `${{ env.OMNIPHONY_REF }}`
-            (https://github.com/mgth/Omniphony).
+            (https://github.com/Prushka/Omniphony).
             Bundled third-party libraries: see `THIRD-PARTY-NOTICES.md`.
           files: |
             mpv-omniphony-*-linux-x86_64.zip
